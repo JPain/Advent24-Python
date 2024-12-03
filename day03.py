@@ -18,11 +18,24 @@ def part1():
     print(sumitup)
 
 def part2():
+    sumitup = 0
+    pattern = re.compile(r"do\(\)|don't\(\)|mul\(\d+,\d+\)")
     with open(inputFileName) as fileInput:
+        mul = True
         for line in fileInput.readlines():
-            print('nothing')
-            # Logic here
+            for match in pattern.finditer(line):
+                thething = match.group()
+                print(f'Found {thething}')
+                if thething == "do()":
+                    mul = True
+                elif thething == "don't()":
+                    mul = False
+                elif thething.startswith("mul(") and mul:
+                    nums = re.findall(r'\d+', thething)
+                    thissum = int(nums[0]) * int(nums[1])
+                    sumitup = sumitup + thissum
+    print(sumitup)
 
 if __name__ == "__main__":
-    part1()
-    # part2()
+    # part1()
+    part2()
